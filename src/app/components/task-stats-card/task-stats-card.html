@@ -1,0 +1,134 @@
+
+<div class="relative bg-white dark:bg-neutral-900 rounded-[2.5rem] shadow-2xl shadow-indigo-500/5 border border-slate-200 dark:border-neutral-800 overflow-hidden transition-all duration-500 hover:shadow-indigo-500/10">
+  
+  <div class="relative z-10">
+    <!-- Premium Analytic Header -->
+    <div class="px-8 py-6 border-b border-slate-100 dark:border-neutral-800/50">
+      <div class="flex items-center gap-4">
+        <div class="w-11 h-11 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">Ecosystem Pulse</h3>
+          <p class="text-[10px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-[0.2em] mt-0.5">Global Task Meta-Data</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Engine -->
+    <div class="p-8">
+      @if (isLoading) {
+        <div class="space-y-6">
+          <div class="flex justify-center mb-8">
+            <div class="w-32 h-32 rounded-full border-4 border-slate-100 dark:border-neutral-800 animate-pulse"></div>
+          </div>
+          @for (i of [1, 2, 3, 4]; track i) {
+            <div class="space-y-2">
+              <div class="h-2 bg-slate-100 dark:bg-neutral-800 rounded-full w-2/3 animate-pulse"></div>
+              <div class="h-1.5 bg-slate-50 dark:bg-neutral-800/50 rounded-full w-full animate-pulse"></div>
+            </div>
+          }
+        </div>
+      } @else {
+      
+      <!-- Central Intelligence Gauge -->
+      <div class="flex items-center justify-center mb-10 group/gauge">
+        <div class="relative w-40 h-40">
+          <div class="absolute inset-0 bg-indigo-500 blur-3xl opacity-5 group-hover/gauge:opacity-15 transition-opacity duration-700"></div>
+          <svg class="w-40 h-40 transform -rotate-90 relative z-10" viewBox="0 0 120 120">
+            <!-- Gauge Track -->
+            <circle
+              cx="60"
+              cy="60"
+              r="52"
+              fill="none"
+              stroke="#f1f5f9"
+              class="dark:stroke-neutral-800/50"
+              stroke-width="10"
+            />
+            <!-- Gauge Indicator -->
+            <circle
+              cx="60"
+              cy="60"
+              r="52"
+              fill="none"
+              stroke="url(#pulseGradient)"
+              stroke-width="10"
+              stroke-linecap="round"
+              [attr.stroke-dasharray]="circleCircumference"
+              [attr.stroke-dashoffset]="circleOffset"
+              class="transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+            />
+            <defs>
+              <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4f46e5" />
+                <stop offset="50%" stop-color="#7c3aed" />
+                <stop offset="100%" stop-color="#4f46e5" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center z-20">
+            <span class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">{{ completionRate }}%</span>
+            <span class="text-[10px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mt-1">Resolution</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- High-Fidelity Status Indicators -->
+      <div class="space-y-5">
+        @for (stat of statusStats; track trackByStat($index, stat)) {
+        <div class="group/stat">
+          <div class="flex items-center justify-between mb-2.5">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-300 group-hover/stat:scale-110 shadow-sm" [class]="stat.bgColor">
+                <svg class="w-4 h-4" [class]="getStatusIconColor(stat.status)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" [attr.d]="getStatusIcon(stat.status)"/>
+                </svg>
+              </div>
+              <span class="text-xs font-black text-slate-700 dark:text-neutral-300 uppercase tracking-wider">{{ stat.label }}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-sm font-black text-slate-900 dark:text-white">{{ stat.count }}</span>
+              <span class="px-2 py-0.5 bg-slate-50 dark:bg-black border border-slate-100 dark:border-neutral-800 rounded-lg text-[9px] font-black text-slate-400 dark:text-neutral-500 tracking-widest">{{ round(stat.percentage) }}%</span>
+            </div>
+          </div>
+          <div class="h-2 bg-slate-50 dark:bg-neutral-800/50 rounded-full overflow-hidden shadow-inner p-[1px]">
+            <div 
+              class="h-full rounded-full transition-all duration-700 ease-out shadow-sm bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600"
+              [style.width]="getProgressBarWidth(stat.percentage)">
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- Critical Status Warning -->
+      @if (stats.missedCount > 0) {
+        <div class="mt-10 p-5 bg-rose-50/50 dark:bg-rose-950/20 rounded-3xl border border-rose-100 dark:border-rose-900/30 group/alert">
+          <div class="flex items-center gap-4">
+            <div class="shrink-0 relative">
+              <div class="absolute inset-0 bg-rose-500 blur-lg opacity-20 group-hover/alert:opacity-40 transition-opacity animate-pulse"></div>
+              <div class="relative w-11 h-11 bg-rose-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-rose-500/30 group-hover/alert:rotate-12 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-black text-rose-600 dark:text-rose-400 uppercase tracking-widest">
+                Overdue Vectors
+              </p>
+              <p class="text-lg font-black text-slate-900 dark:text-white leading-none mt-1">
+                {{ stats.missedCount }} Node{{ stats.missedCount > 1 ? 's' : '' }} Expired
+              </p>
+            </div>
+            
+          </div>
+        </div>
+      }
+      }
+    </div>
+  </div>
+</div>
