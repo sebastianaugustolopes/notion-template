@@ -1,0 +1,143 @@
+<div class="p-6 md:p-10 lg:p-14 animate-in fade-in duration-700">
+  
+  <!-- Hero Greeting Header -->
+  <div class="mb-14">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+      <div class="space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 rounded-full">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-pulse"></span>
+          <span class="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em]">System Online</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+          <ng-content select="[header-title]"></ng-content>
+        </h1>
+        <p class="text-slate-500 dark:text-neutral-400 text-lg font-medium">
+          <ng-content select="[header-subtitle]"></ng-content>
+        </p>
+      </div>
+
+      <div class="flex items-center gap-4">
+        @if (showExpiredButton && expiredCount > 0) {
+          <button 
+            (click)="onExpiredClick()"
+            class="group relative flex items-center gap-3 px-6 py-4 bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 font-black text-xs uppercase tracking-widest rounded-2xl border border-rose-100 dark:border-rose-900/50 hover:bg-rose-600 hover:text-white transition-all duration-300 shadow-xl shadow-rose-500/10">
+            <svg class="w-5 h-5 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2.5"/></svg>
+            Overdue Alerts
+            <span class="absolute -top-2 -right-2 w-7 h-7 bg-rose-600 text-white text-[10px] font-black rounded-full flex items-center justify-center border-4 border-slate-50 dark:border-neutral-950 shadow-lg">
+              {{ expiredCount }}
+            </span>
+          </button>
+        }
+        
+        <button 
+          (click)="onCreate()"
+          class="hidden md:flex items-center gap-3 px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-black/20 hover:scale-[1.03] active:scale-95 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="3"/></svg>
+          New Project
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- High-Definition Metric Cards -->
+  @if (config.showMetrics && config.metrics) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
+      @for (metric of config.metrics; track metric.label) {
+        <app-metric-card
+          [value]="metric.value"
+          [label]="metric.label"
+          [icon]="metric.icon"
+          [color]="metric.color">
+        </app-metric-card>
+      }
+    </div>
+  }
+
+  <!-- Main Content Section -->
+  <div class="flex flex-col xl:flex-row gap-10">
+    
+    <!-- Project List (Primary Area) -->
+    <div class="flex-1 space-y-10">
+      <div class="flex items-center justify-between px-2">
+        <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-4">
+          <span class="w-12 h-1 bg-indigo-600 rounded-full"></span>
+          {{ config.title }}
+        </h2>
+      </div>
+
+      <!-- States -->
+      @if (isLoading) {
+        <div class="flex flex-col items-center justify-center py-24 space-y-4">
+          <div class="relative w-16 h-16">
+            <div class="absolute inset-0 border-4 border-indigo-100 dark:border-indigo-950 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
+          </div>
+          <span class="text-slate-400 dark:text-neutral-600 font-black text-xs uppercase tracking-widest animate-pulse">Syncing environment...</span>
+        </div>
+      }
+
+      @if (!isLoading && displayProjects.length === 0) {
+        <div class="bg-white dark:bg-neutral-900 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-neutral-800 p-20 flex flex-col items-center text-center group">
+          <div class="relative mb-8">
+            <div class="absolute inset-0 bg-indigo-500 blur-3xl opacity-10 group-hover:opacity-20 transition-opacity"></div>
+            <div class="relative bg-slate-50 dark:bg-neutral-800 w-24 h-24 rounded-[2rem] flex items-center justify-center border border-slate-100 dark:border-neutral-700 shadow-xl group-hover:rotate-12 transition-transform duration-500">
+              <svg class="w-10 h-10 text-slate-400 dark:text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2.5"/></svg>
+            </div>
+          </div>
+          <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Workspace Empty</h3>
+          <p class="text-slate-500 dark:text-neutral-400 max-w-sm mb-10 text-lg font-medium leading-relaxed">Initialization required. Begin your next breakthrough by creating your first project container.</p>
+          <button 
+            (click)="onCreate()"
+            class="px-10 py-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-[2rem] font-black text-xs uppercase tracking-widest shadow-2xl shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95">
+            Launch Primary Project
+          </button>
+        </div>
+      }
+
+      @if (!isLoading && displayProjects.length > 0) {
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          @for (project of displayProjects; track project.id) {
+            <div class="animate-in slide-in-from-bottom-6 duration-500" [style.animation-delay]="$index * 100 + 'ms'">
+              <app-project-card 
+                [project]="project"
+                (edit)="onEdit($event)"
+                (delete)="onDelete($event)">
+              </app-project-card>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Analytic Sidebar -->
+    @if (config.showSidebar && taskStats) {
+      <div class="w-full xl:w-[400px] space-y-10">
+        <div class="px-2">
+           <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-4">
+              <span class="w-12 h-1 bg-emerald-500 rounded-full"></span>
+              Pulse View
+            </h2>
+        </div>
+        <div class="lg:sticky lg:top-32">
+          <app-task-stats-card
+            [stats]="taskStats"
+            [isLoading]="isLoadingStats">
+          </app-task-stats-card>
+          
+          <!-- Bonus Interactive Element -->
+          <div class="mt-8 p-10 bg-gradient-to-br from-slate-900 to-black rounded-[3rem] text-white overflow-hidden relative group">
+            <div class="absolute -top-12 -right-12 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+            <div class="relative z-10 space-y-6">
+               <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
+                  <svg class="w-6 h-6 text-indigo-400" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+               </div>
+               <h4 class="text-2xl font-black leading-tight">Proprietary AI<br>Insights.</h4>
+               <p class="text-slate-400 text-sm font-medium leading-relaxed">In development...</p>
+               <button class="text-xs font-black uppercase tracking-widest text-indigo-400 hover:text-white transition-colors underline underline-offset-8 decoration-2">Access Intelligence Panel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

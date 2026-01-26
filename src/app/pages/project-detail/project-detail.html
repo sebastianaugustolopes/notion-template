@@ -1,0 +1,232 @@
+
+<app-dashboard-layout (createProject)="goBack()">
+  <div class="min-h-screen bg-transparent p-6 md:p-10 lg:p-14 animate-in fade-in duration-1000">
+    
+    <!-- Navigation Terminal Breadcrumb -->
+    <div class="max-w-7xl mx-auto mb-10">
+      <button 
+        (click)="goBack()"
+        class="group flex items-center gap-3 px-5 py-3 bg-white/5 hover:bg-indigo-600 dark:bg-neutral-900/40 dark:hover:bg-indigo-500 backdrop-blur-2xl border border-white/10 dark:border-neutral-800/50 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 dark:text-neutral-400 hover:text-white transition-all shadow-2xl active:scale-95 group/back">
+        <svg class="w-4 h-4 transition-transform group-hover/back:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Escape to Workspace
+      </button>
+    </div>
+
+    @if (isLoading) {
+      <div class="flex flex-col items-center justify-center py-40 gap-6">
+        <div class="relative w-20 h-20">
+          <div class="absolute inset-0 border-4 border-indigo-100 dark:border-indigo-900/30 rounded-full"></div>
+          <div class="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
+        </div>
+        <span class="text-[10px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-[0.5em] animate-pulse">Syncing Project Core...</span>
+      </div>
+    }
+
+    @if (!isLoading && project) {
+      <div class="max-w-7xl mx-auto space-y-12 animate-in slide-in-from-bottom-12 duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)]">
+        
+        <!-- Command Hero Section -->
+        <div class="relative group bg-white/80 dark:bg-neutral-900/80 backdrop-blur-3xl rounded-[3.5rem] border border-slate-100 dark:border-neutral-800 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.1)] dark:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-700 hover:border-indigo-500/30">
+          <div class="absolute top-0 left-0 w-2.5 h-full bg-linear-to-b from-indigo-600 via-violet-600 to-emerald-500"></div>
+          
+          <!-- Subtle Top Shine -->
+          <div class="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/40 dark:via-white/5 to-transparent"></div>
+
+          <div class="p-12 md:p-16 flex flex-col lg:flex-row lg:items-center justify-between gap-12 relative z-10">
+            <div class="space-y-8">
+              <div class="flex flex-wrap items-center gap-5">
+                <div class="px-4 py-1.5 bg-indigo-600 text-white rounded-full text-[10px]  uppercase tracking-[0.3em] shadow-lg shadow-indigo-600/20">
+                  {{ formatDate(project.createdAt) }}
+                </div>
+                <div class="w-1.5 h-1.5 rounded-full bg-slate-200 dark:bg-neutral-800"></div>
+                <app-priority-badge [priority]="project.priority"></app-priority-badge>
+              </div>
+              
+              <div class="space-y-4">
+                <h1 class="text-6xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tighter leading-[0.9] group-hover:text-indigo-600 transition-colors duration-700">
+                  {{ project.name }}
+                </h1>
+                <p class="text-slate-500 dark:text-neutral-400 text-2xl font-medium max-w-2xl leading-relaxed opacity-80">
+                  {{ project.description }}
+                </p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-6 pt-6">
+                <div class="flex items-center gap-4 px-8 py-4 bg-slate-50 dark:bg-black border border-slate-100 dark:border-neutral-800 rounded-3xl shadow-inner group/date hover:border-indigo-500/20 transition-all">
+                  <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2.5"/></svg>
+                  <span class="text-xs  text-slate-900 dark:text-white uppercase tracking-[0.2em]">
+                    {{ formatDate(project.startDate) }} <span class="text-slate-300 dark:text-neutral-800 mx-2">—</span> {{ formatDate(project.endDate) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Command Matrix -->
+            <div class="flex flex-col gap-4 min-w-70">
+              <button 
+                (click)="openExpiredTasksModal()"
+                class="group relative flex items-center justify-center gap-4 px-10 py-6 rounded-[2.5rem] font-black text-[10px] uppercase tracking-[0.3em] transition-all shadow-2xl active:scale-95 border-2"
+                [class.bg-rose-600]="hasExpiredTasks"
+                [class.text-white]="hasExpiredTasks"
+                [class.border-rose-500]="hasExpiredTasks"
+                [class.shadow-rose-600/40]="hasExpiredTasks"
+                [class.bg-white]="!hasExpiredTasks"
+                [class.dark:bg-neutral-800]="!hasExpiredTasks"
+                [class.text-slate-400]="!hasExpiredTasks"
+                [class.border-slate-100]="!hasExpiredTasks"
+                [class.dark:border-neutral-700]="!hasExpiredTasks">
+                <svg class="w-6 h-6" [class.animate-pulse]="hasExpiredTasks" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="3"/></svg>
+                <span>Incidents</span>
+                @if (hasExpiredTasks) {
+                  <span class="bg-white text-rose-600 px-3 py-1 rounded-full text-[10px] font-black ml-2 shadow-sm">
+                    {{ expiredTasksCount }}
+                  </span>
+                }
+              </button>
+
+              <button 
+                (click)="openCreateTaskModal()"
+                class="flex items-center justify-center gap-4 px-12 py-6 bg-slate-900 dark:bg-white text-white dark:text-slate-950 rounded-[2.5rem] font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl shadow-black/20 hover:bg-indigo-600 dark:hover:bg-indigo-500 hover:text-white hover:scale-[1.05] active:scale-95 transition-all">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="4" stroke-linecap="round"/></svg>
+                <span>Deploy Node</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Flux Display -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          @for (stat of statCards; track trackByStat($index, stat)) {
+            <div class="group bg-white/40 dark:bg-neutral-900/40 backdrop-blur-2xl rounded-[3rem] p-10 border border-slate-100 dark:border-neutral-800 transition-all duration-700 hover:-translate-y-3 hover:shadow-2xl hover:shadow-indigo-500/10">
+              <div class="flex flex-col h-full justify-between gap-8">
+                <div class="flex items-center justify-between">
+                  <div class="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-700 group-hover:rotate-12 group-hover:scale-110 shadow-xl border border-slate-50 dark:border-neutral-800" [class]="stat.bgColor">
+                    <svg class="w-7 h-7" [class]="stat.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" [attr.d]="stat.icon"/>
+                    </svg>
+                  </div>
+                  <span class="text-[9px] font-black text-slate-400 dark:text-neutral-600 uppercase tracking-[0.3em]">Telemetry</span>
+                </div>
+                <div>
+                  <p class="text-6xl font-black text-slate-900 dark:text-white tracking-tighter leading-none">{{ stat.value }}</p>
+                  <p class="text-[10px] font-black text-slate-500 dark:text-neutral-400 uppercase tracking-[0.4em] mt-3">{{ stat.label }}</p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Resolution Pipeline -->
+        <div class="bg-white dark:bg-neutral-900 rounded-[3.5rem] p-12 border border-slate-100 dark:border-neutral-800 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)]">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-6">
+            <div class="space-y-2">
+              <h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Ecosystem Maturity</h2>
+              <p class="text-[10px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-[0.4em]">Resource distribution & completion velocity</p>
+            </div>
+            <div class="px-10 py-5 bg-slate-50 dark:bg-black rounded-4xl shadow-inner flex flex-col items-end">
+               <span class="text-4xl font-black text-indigo-600 dark:text-indigo-400 tracking-tighter">{{ progressPercentage }}%</span>
+               <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-1">Resolution Efficiency</span>
+            </div>
+          </div>
+          <div class="relative h-6 bg-slate-50 dark:bg-black rounded-full overflow-hidden shadow-inner p-1.5 border border-slate-100 dark:border-neutral-800">
+             <div 
+               class="h-full bg-linear-to-r from-indigo-600 via-violet-600 to-indigo-600 rounded-full transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-[0_0_20px_rgba(79,70,229,0.5)] relative"
+               [style.width.%]="progressPercentage">
+               <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]"></div>
+             </div>
+          </div>
+        </div>
+
+        <!-- Task Flux Terminal -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          
+          <!-- Column: Operational Nodes -->
+          <div class="space-y-10">
+            <div class="flex items-center justify-between px-8">
+              <div class="flex items-center gap-5">
+                <div class="w-3.5 h-3.5 rounded-full bg-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.5)] animate-pulse"></div>
+                <h3 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight uppercase">Operational Nodes</h3>
+              </div>
+              <span class="text-[10px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-[0.3em]">{{ pendingTasks.length }} Processing</span>
+            </div>
+
+            <div class="space-y-4">
+              @if (pendingTasks.length === 0) {
+                <div class="flex flex-col items-center justify-center py-28 bg-white/5 dark:bg-neutral-900/20 backdrop-blur-xl rounded-[3rem] border border-dashed border-slate-200 dark:border-neutral-800 space-y-6">
+                  <div class="w-24 h-24 bg-slate-50 dark:bg-black rounded-[2.5rem] flex items-center justify-center border border-slate-100 dark:border-neutral-800 shadow-xl opacity-60">
+                    <svg class="w-12 h-12 text-slate-300 dark:text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2.5"/></svg>
+                  </div>
+                  <div class="text-center">
+                    <p class="text-xl font-black text-slate-900 dark:text-white">Protocol Optimized</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">No active nodes detected in current cycle</p>
+                  </div>
+                </div>
+              } @else {
+                @for (task of pendingTasks; track trackByTask($index, task)) {
+                  <div class="animate-in slide-in-from-left-8 duration-700 fill-mode-both" [style.animation-delay]="($index * 100) + 'ms'">
+                    <app-task-item
+                      [task]="task"
+                      (statusChange)="onStatusChange($event)"
+                      (edit)="openEditTaskModal($event)"
+                      (delete)="deleteTask($event)">
+                    </app-task-item>
+                  </div>
+                }
+              }
+            </div>
+          </div>
+
+          <!-- Column: Commit History -->
+          <div class="space-y-10">
+            <div class="flex items-center justify-between px-8">
+              <div class="flex items-center gap-5">
+                <div class="w-3.5 h-3.5 rounded-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
+                <h3 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight uppercase">Commit History</h3>
+              </div>
+              <span class="text-[10px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-[0.3em]">{{ completedTasksList.length }} Resolved</span>
+            </div>
+
+            <div class="space-y-4 opacity-70 hover:opacity-100 transition-opacity duration-500">
+              @if (completedTasksList.length === 0) {
+                <div class="flex flex-col items-center justify-center py-28 bg-white/5 dark:bg-neutral-900/20 backdrop-blur-xl rounded-[3rem] border border-dashed border-slate-200 dark:border-neutral-800 space-y-6">
+                   <div class="w-24 h-24 bg-slate-50 dark:bg-black rounded-[2.5rem] flex items-center justify-center opacity-30">
+                    <svg class="w-12 h-12 text-slate-300 dark:text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2.5"/></svg>
+                  </div>
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Commit history empty</p>
+                </div>
+              } @else {
+                @for (task of completedTasksList; track trackByTask($index, task)) {
+                  <div class="animate-in slide-in-from-right-8 duration-700 fill-mode-both" [style.animation-delay]="($index * 100) + 'ms'">
+                    <app-task-item
+                      [task]="task"
+                      (statusChange)="onStatusChange($event)"
+                      (edit)="openEditTaskModal($event)"
+                      (delete)="deleteTask($event)">
+                    </app-task-item>
+                  </div>
+                }
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</app-dashboard-layout>
+
+<!-- Modals -->
+<app-task-form-modal 
+  [isOpen]="isTaskModalOpen"
+  [task]="selectedTask"
+  [projectEndDate]="project?.endDate || ''"
+  (close)="closeTaskModal()"
+  (save)="saveTask($event)">
+</app-task-form-modal>
+
+<app-expired-tasks-modal
+  [isOpen]="isExpiredModalOpen"
+  [tasks]="expiredTasks"
+  [isLoading]="isLoadingExpired"
+  (close)="closeExpiredTasksModal()"
+  (taskClick)="onExpiredTaskClick($event)">
+</app-expired-tasks-modal>

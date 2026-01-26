@@ -1,0 +1,22 @@
+<div class="w-full">
+  @if (showLabel()) {
+    <div class="flex items-center justify-between mb-1.5">
+      <span class="text-xs font-medium text-slate-600 dark:text-neutral-400">Progress</span>
+      <span class="text-xs font-semibold text-slate-700 dark:text-white">{{ percentage() }}%</span>
+    </div>
+  }
+  
+  <div class="w-full bg-slate-200 dark:bg-neutral-800 rounded-full overflow-hidden" [class]="heightClass()">
+    <div 
+      class="h-full rounded-full transition-all duration-500 ease-out"
+      [class]="progressColor()"
+      [style.width.%]="percentage()">
+    </div>
+  </div>
+  
+  @if (showLabel() && totalTasks() > 0) {
+    <p class="text-xs text-slate-500 dark:text-neutral-400 mt-1">
+      {{ completedTasks() }} of {{ totalTasks() }} tasks completed
+    </p>
+  }
+</div>
