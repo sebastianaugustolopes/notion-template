@@ -15,12 +15,12 @@ import { Task } from '../../types/task.type';
 })
 export class DashboardLayout implements OnInit {
   @Output() createProject = new EventEmitter<void>();
-  
+
   // Estado do usuário
   userName: string = '';
   userInitials: string = '';
   userProfilePhoto: string | null = null;
-  
+
   // Estado da UI
   isSidebarOpen: boolean = true;
   isMobileMenuOpen: boolean = false;
@@ -65,25 +65,44 @@ export class DashboardLayout implements OnInit {
 
   ngOnInit(): void {
     this.loadUserProfile();
+    this.subscribeToProfileChanges();
     this.setupResponsiveListener();
   }
 
   /**
-   * Carrega o perfil do usuário do serviço
+   * Carrega o perfil do usuário do serviço (usa cache se disponível)
    */
   loadUserProfile(): void {
     this.userProfileService.getProfile().subscribe({
       next: (profile) => {
-        this.userProfilePhoto = profile.profilePhoto || null;
-        if (profile.name) {
-          this.userName = profile.name;
-          this.userInitials = this.getInitials(profile.name);
-        }
+        this.updateUserData(profile);
       },
       error: () => {
         this.userProfilePhoto = null;
       }
     });
+  }
+
+  /**
+   * Se inscreve para mudanças no perfil (quando o usuário atualiza a foto)
+   */
+  subscribeToProfileChanges(): void {
+    this.userProfileService.getProfileChanges().subscribe(profile => {
+      if (profile) {
+        this.updateUserData(profile);
+      }
+    });
+  }
+
+  /**
+   * Atualiza os dados do usuário na interface
+   */
+  private updateUserData(profile: { name?: string; profilePhoto?: string | null }): void {
+    this.userProfilePhoto = profile.profilePhoto || null;
+    if (profile.name) {
+      this.userName = profile.name;
+      this.userInitials = this.getInitials(profile.name);
+    }
   }
 
   /**
@@ -174,6 +193,7 @@ export class DashboardLayout implements OnInit {
   logout(): void {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('name');
+    this.userProfileService.clearCache();
     this.router.navigate(['/login']);
   }
 
@@ -213,7 +233,7 @@ export class DashboardLayout implements OnInit {
     }
 
     this.isSearching = true;
-    
+
     this.searchService.searchAll(query).subscribe({
       next: (results) => {
         this.searchResults = results;
@@ -253,7 +273,7 @@ export class DashboardLayout implements OnInit {
       this.closeSearch();
       return;
     }
-    
+
     // Se houver resultados, navega para o primeiro projeto ou tarefa
     if (this.searchResults.projects.length > 0) {
       this.navigateToProject(this.searchResults.projects[0]);
@@ -281,12 +301,12 @@ export class DashboardLayout implements OnInit {
   getProjectName(projectId: string): string {
     // Primeiro tenta encontrar nos projetos que correspondem à busca
     let project = this.searchResults.projects.find((p) => p.id === projectId);
-    
+
     // Se não encontrou, busca em todos os projetos (para tarefas de projetos que não corresponderam à busca)
     if (!project) {
       project = this.searchResults.allProjects.find((p) => p.id === projectId);
     }
-    
+
     return project ? project.name : 'Project';
   }
 }
