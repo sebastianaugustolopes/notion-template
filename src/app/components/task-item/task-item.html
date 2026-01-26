@@ -1,68 +1,57 @@
-<div 
-  class="group relative bg-white dark:bg-neutral-900 rounded-xl border transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/10 overflow-hidden"
-  [class.border-slate-200]="!isCompleted && !isOverdue()"
-  [class.dark:border-neutral-800]="!isCompleted && !isOverdue()"
-  [class.border-emerald-500/40]="isCompleted"
-  [class.bg-emerald-50/30]="isCompleted"
-  [class.dark:bg-emerald-950/10]="isCompleted"
-  [class.border-rose-500/40]="isOverdue()"
-  [class.bg-rose-50/30]="isOverdue()"
-  [class.dark:bg-rose-950/10]="isOverdue()">
-  
-  <!-- Status Bar -->
-  <div 
-    class="absolute left-0 top-0 bottom-0 w-1 transition-all duration-300 group-hover:w-1.5"
-    [class.bg-emerald-500]="isCompleted"
-    [class.bg-rose-500]="isOverdue()"
-    [class.bg-amber-500]="isDueSoon() && !isCompleted"
-    [class.bg-indigo-500]="!isCompleted && !isOverdue() && !isDueSoon()">
-  </div>
+<div
+  class="group relative bg-white dark:bg-neutral-900 rounded-xl border transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/10"
+  [class.border-slate-200]="!isCompleted && !isOverdue()" [class.dark:border-neutral-800]="!isCompleted && !isOverdue()"
+  [class.border-emerald-500/40]="isCompleted" [class.bg-emerald-50/30]="isCompleted"
+  [class.dark:bg-emerald-950/10]="isCompleted" [class.border-rose-500/40]="isOverdue()"
+  [class.bg-rose-50/30]="isOverdue()" [class.dark:bg-rose-950/10]="isOverdue()">
+
+
 
   <div class="p-5 ml-2">
-    
+
     <!-- Header Section -->
     <div class="flex items-start justify-between gap-4 mb-4">
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-3 mb-2">
-          <h3 
-            class="text-lg font-bold transition-all duration-300 flex-1 min-w-0"
-            [class.text-slate-900]="!isCompleted"
-            [class.dark:text-white]="!isCompleted"
-            [class.text-slate-500]="isCompleted"
-            [class.dark:text-neutral-500]="isCompleted"
-            [class.line-through]="isCompleted">
+          <h3 class="text-lg font-bold transition-all duration-300 flex-1 min-w-0" [class.text-slate-900]="!isCompleted"
+            [class.dark:text-white]="!isCompleted" [class.text-slate-500]="isCompleted"
+            [class.dark:text-neutral-500]="isCompleted" [class.line-through]="isCompleted">
             {{ task.title }}
           </h3>
-          <svg *ngIf="isCompleted" class="w-5 h-5 shrink-0 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
         </div>
-        <p 
-          class="text-sm leading-relaxed"
-          [class.text-slate-600]="!isCompleted"
-          [class.dark:text-neutral-400]="!isCompleted"
-          [class.text-slate-500]="isCompleted"
+        <p class="text-sm leading-relaxed" [class.text-slate-600]="!isCompleted"
+          [class.dark:text-neutral-400]="!isCompleted" [class.text-slate-500]="isCompleted"
           [class.dark:text-neutral-600]="isCompleted">
           {{ task.description }}
         </p>
       </div>
 
       <!-- Actions -->
-      <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <button 
-          (click)="onEdit()"
-          class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all"
+      <div class="flex items-center gap-2">
+        <!-- Completed Icon -->
+        <div *ngIf="isCompleted"
+          class="w-9 h-9 flex items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/30"
+          title="Task completed">
+          <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <button (click)="onEdit()"
+          class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           title="Edit task">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-            <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" stroke-linecap="round" stroke-linejoin="round"/>
+            <path
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
-        <button 
-          (click)="onDelete()"
-          class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all"
+        <button (click)="onDelete()"
+          class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           title="Delete task">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-            <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round"/>
+            <path
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
       </div>
@@ -70,15 +59,10 @@
 
     <!-- Metadata Section -->
     <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-slate-100 dark:border-neutral-800">
-      
+
       <!-- Status Selector -->
-      <app-select 
-        placeholder="Status"
-        [options]="statusOptions" 
-        [value]="task.status" 
-        (valueChange)="onStatusChange($event)"
-        [compact]="true"
-        class="block min-w-40">
+      <app-select placeholder="Status" [options]="statusOptions" [value]="task.status"
+        (valueChange)="onStatusChange($event)" [compact]="true" class="block min-w-40">
       </app-select>
 
       <!-- Priority Badge -->
@@ -88,19 +72,14 @@
       <div class="flex-1"></div>
 
       <!-- Due Date Badge - Modern Glassmorphic Design -->
-      <div 
+      <div
         class="relative flex items-center gap-2.5 px-4 py-2 rounded-full text-xs font-semibold transition-all duration-500 backdrop-blur-xl overflow-hidden border group/badge hover:scale-105 hover:shadow-lg"
-        [class.bg-rose-500/10]="isOverdue()"
-        [class.dark:bg-rose-500/20]="isOverdue()"
-        [class.border-rose-500/30]="isOverdue()"
-        [class.text-rose-700]="isOverdue()"
-        [class.dark:text-rose-300]="isOverdue()"
-        [class.shadow-rose-500/10]="isOverdue()"
-        [class.hover:shadow-rose-500/30]="isOverdue()"
-        [class.bg-amber-500/10]="isDueSoon() && !isCompleted"
+        [class.bg-rose-500/10]="isOverdue()" [class.dark:bg-rose-500/20]="isOverdue()"
+        [class.border-rose-500/30]="isOverdue()" [class.text-rose-700]="isOverdue()"
+        [class.dark:text-rose-300]="isOverdue()" [class.shadow-rose-500/10]="isOverdue()"
+        [class.hover:shadow-rose-500/30]="isOverdue()" [class.bg-amber-500/10]="isDueSoon() && !isCompleted"
         [class.dark:bg-amber-500/20]="isDueSoon() && !isCompleted"
-        [class.border-amber-500/30]="isDueSoon() && !isCompleted"
-        [class.text-amber-700]="isDueSoon() && !isCompleted"
+        [class.border-amber-500/30]="isDueSoon() && !isCompleted" [class.text-amber-700]="isDueSoon() && !isCompleted"
         [class.dark:text-amber-300]="isDueSoon() && !isCompleted"
         [class.shadow-amber-500/10]="isDueSoon() && !isCompleted"
         [class.hover:shadow-amber-500/30]="isDueSoon() && !isCompleted"
@@ -110,72 +89,55 @@
         [class.dark:border-neutral-700/40]="!isOverdue() && !isDueSoon() && !isCompleted"
         [class.text-slate-600]="!isOverdue() && !isDueSoon() && !isCompleted"
         [class.dark:text-neutral-400]="!isOverdue() && !isDueSoon() && !isCompleted"
-        [class.bg-emerald-500/10]="isCompleted"
-        [class.dark:bg-emerald-500/20]="isCompleted"
-        [class.border-emerald-500/30]="isCompleted"
-        [class.text-emerald-700]="isCompleted"
-        [class.dark:text-emerald-300]="isCompleted"
-        [class.shadow-emerald-500/10]="isCompleted"
+        [class.bg-emerald-500/10]="isCompleted" [class.dark:bg-emerald-500/20]="isCompleted"
+        [class.border-emerald-500/30]="isCompleted" [class.text-emerald-700]="isCompleted"
+        [class.dark:text-emerald-300]="isCompleted" [class.shadow-emerald-500/10]="isCompleted"
         [class.hover:shadow-emerald-500/30]="isCompleted">
-        
+
         <!-- Glowing Gradient Background -->
-        <div 
-          class="absolute inset-0 opacity-0 group-hover/badge:opacity-100 transition-opacity duration-700"
-          [class.bg-gradient-to-r]="true"
-          [class.from-rose-500/5]="isOverdue()"
-          [class.via-rose-500/10]="isOverdue()"
-          [class.to-rose-500/5]="isOverdue()"
-          [class.from-amber-500/5]="isDueSoon() && !isCompleted"
-          [class.via-amber-500/10]="isDueSoon() && !isCompleted"
-          [class.to-amber-500/5]="isDueSoon() && !isCompleted"
-          [class.from-emerald-500/5]="isCompleted"
-          [class.via-emerald-500/10]="isCompleted"
+        <div class="absolute inset-0 opacity-0 group-hover/badge:opacity-100 transition-opacity duration-700"
+          [class.bg-gradient-to-r]="true" [class.from-rose-500/5]="isOverdue()" [class.via-rose-500/10]="isOverdue()"
+          [class.to-rose-500/5]="isOverdue()" [class.from-amber-500/5]="isDueSoon() && !isCompleted"
+          [class.via-amber-500/10]="isDueSoon() && !isCompleted" [class.to-amber-500/5]="isDueSoon() && !isCompleted"
+          [class.from-emerald-500/5]="isCompleted" [class.via-emerald-500/10]="isCompleted"
           [class.to-emerald-500/5]="isCompleted">
         </div>
-        
+
         <!-- Icon Container with Glow -->
         <div class="relative z-10 flex items-center justify-center">
           <!-- Pulse Ring for Urgent States -->
-          <div 
-            *ngIf="isOverdue() || isDueSoon()"
-            class="absolute w-6 h-6 rounded-full animate-ping"
-            [class.bg-rose-500/30]="isOverdue()"
-            [class.bg-amber-500/30]="isDueSoon()">
+          <div *ngIf="isOverdue() || isDueSoon()" class="absolute w-6 h-6 rounded-full animate-ping"
+            [class.bg-rose-500/30]="isOverdue()" [class.bg-amber-500/30]="isDueSoon()">
           </div>
-          
+
           <!-- Icon with Subtle Shadow -->
-          <div 
-            class="relative flex items-center justify-center w-5 h-5 rounded-full transition-all duration-300"
-            [class.bg-rose-500/20]="isOverdue()"
-            [class.bg-amber-500/20]="isDueSoon() && !isCompleted"
+          <div class="relative flex items-center justify-center w-5 h-5 rounded-full transition-all duration-300"
+            [class.bg-rose-500/20]="isOverdue()" [class.bg-amber-500/20]="isDueSoon() && !isCompleted"
             [class.bg-emerald-500/20]="isCompleted"
             [class.bg-slate-500/10]="!isOverdue() && !isDueSoon() && !isCompleted">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
-              <path 
-                *ngIf="!isCompleted"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" 
-                stroke-linecap="round" 
-                stroke-linejoin="round"/>
-              <path 
-                *ngIf="isCompleted"
-                d="M5 13l4 4L19 7" 
-                stroke-linecap="round" 
-                stroke-linejoin="round"/>
+              <path *ngIf="!isCompleted" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path *ngIf="isCompleted" d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </div>
         </div>
-        
+
         <!-- Text with Letter Spacing -->
         <span class="relative z-10 tracking-wider uppercase text-[10px] font-bold">
           {{ getDueDateText() }}
         </span>
-        
+
         <!-- Animated Shine Effect -->
-        <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/badge:translate-x-full transition-transform duration-1000 pointer-events-none"></div>
+        <div
+          class="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/badge:translate-x-full transition-transform duration-1000 pointer-events-none">
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Hover Gradient -->
-  <div class="absolute inset-0 bg-linear-to-br from-indigo-500/0 via-transparent to-indigo-500/0 opacity-0 group-hover:opacity-100 group-hover:from-indigo-500/5 group-hover:to-purple-500/5 transition-all duration-700 pointer-events-none"></div>
+  <div
+    class="absolute inset-0 bg-linear-to-br from-indigo-500/0 via-transparent to-indigo-500/0 opacity-0 group-hover:opacity-100 group-hover:from-indigo-500/5 group-hover:to-purple-500/5 transition-all duration-700 pointer-events-none">
+  </div>
 </div>
