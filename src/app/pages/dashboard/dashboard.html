@@ -1,0 +1,38 @@
+
+<app-dashboard-layout (createProject)="openCreateModal()">
+  <app-projects-list
+    [projects]="projects"
+    [isLoading]="isLoading"
+    [config]="projectsListConfig"
+    [taskStats]="taskStats"
+    [isLoadingStats]="isLoadingStats"
+    [showExpiredButton]="true"
+    [expiredCount]="taskStats.missedCount"
+    (createProject)="openCreateModal()"
+    (editProject)="openEditModal($event)"
+    (deleteProject)="deleteProject($event)"
+    (openExpiredTasks)="openExpiredTasksModal()">
+    <div header-title>
+      {{ greeting }}, <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">{{ userName }}</span>
+    </div>
+    <div header-subtitle>
+      Your productivity is at <span class="text-emerald-500 font-bold">{{ completionPercentage }}% capacity</span> today. Ready to scale?
+    </div>
+  </app-projects-list>
+</app-dashboard-layout>
+
+<!-- Modals -->
+<app-project-form-modal 
+  [isOpen]="isModalOpen"
+  [project]="selectedProject"
+  (close)="closeModal()"
+  (save)="saveProject($event)">
+</app-project-form-modal>
+
+<app-expired-tasks-modal
+  [isOpen]="isExpiredModalOpen"
+  [tasks]="expiredTasks"
+  [isLoading]="isLoadingExpired"
+  (close)="closeExpiredTasksModal()"
+  (taskClick)="onExpiredTaskClick($event)">
+</app-expired-tasks-modal>
