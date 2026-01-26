@@ -7,11 +7,5 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "env": [
-    {
-      "key": "VITE_API_URL",
-      "description": "Backend API URL (e.g., https://notion-template-api.onrender.com/api)"
-    }
   ]
 }
