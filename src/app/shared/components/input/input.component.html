@@ -1,0 +1,5 @@
+<div class="space-y-2">
+  <label *ngIf="label" class="block text-sm font-semibold text-white">{{ label }} <span *ngIf="required" class="text-red-500">*</span></label>
+  <input [type]="type" [placeholder]="placeholder" [value]="value" (input)="onInput($event)" class="w-full px-4 py-3 border-2 rounded-xl text-white bg-neutral-800 border-neutral-700 placeholder-neutral-400 focus:outline-none focus:ring-2" />
+  <p *ngIf="errorMsg" class="text-red-500 text-sm">{{ errorMsg }}</p>
+</div>

@@ -1,0 +1,13 @@
+<div *ngIf="isOpen" (click)="onBackdropClick($event)" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in overflow-y-auto scrollbar-hide">
+  <div (click)="$event.stopPropagation()" class="bg-neutral-900 text-white border border-neutral-800 rounded-2xl shadow-2xl w-full max-w-2xl my-auto animate-slide-up relative z-[101] max-h-[90vh] flex flex-col overflow-hidden">
+    <div class="rounded-t-2xl overflow-hidden">
+      <ng-content select="[modal-header]"></ng-content>
+    </div>
+    <div class="overflow-y-auto scrollbar-hide flex-1 min-h-0">
+      <ng-content select="[modal-body]"></ng-content>
+    </div>
+    <div class="rounded-b-2xl overflow-hidden">
+      <ng-content select="[modal-footer]"></ng-content>
+    </div>
+  </div>
+</div>

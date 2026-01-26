@@ -1,0 +1,51 @@
+@if (isDarkVariant) {
+  <!-- Dark Variant Card -->
+  <div class="group relative bg-slate-900 dark:bg-white rounded-[2.5rem] p-8 border border-transparent shadow-2xl transition-all duration-500 hover:-translate-y-2">
+    <div class="flex flex-col h-full justify-between gap-6">
+      <div class="flex items-center justify-between">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center" [ngClass]="[colorConfig.iconBg, colorConfig.iconText]">
+          <svg *ngIf="icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" [innerHTML]="icon | safeHtml" stroke-width="2.5"></svg>
+        </div>
+        <span *ngIf="subLabel" class="text-[9px] font-black text-white/40 dark:text-black/40 uppercase tracking-widest">{{ subLabel }}</span>
+      </div>
+      <div>
+        <p class="text-5xl font-black text-white dark:text-slate-900 tracking-tighter">{{ value }}</p>
+        <p class="text-[10px] font-black text-indigo-400 dark:text-indigo-600 uppercase tracking-[0.2em] mt-1">{{ label }}</p>
+      </div>
+    </div>
+  </div>
+} @else if (isCompact) {
+  <!-- Compact Variant Card -->
+  <div class="group relative bg-white dark:bg-neutral-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-neutral-800 shadow-xl transition-all duration-500 hover:-translate-y-2" [ngClass]="colorConfig.shadow">
+    <div class="flex flex-col h-full justify-between gap-6">
+      <div class="flex items-center justify-between">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center" [ngClass]="[colorConfig.iconBg, colorConfig.iconText, colorConfig.iconBorder]">
+          <svg *ngIf="icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" [innerHTML]="icon | safeHtml" stroke-width="2.5"></svg>
+        </div>
+        <span *ngIf="subLabel" class="text-[9px] font-black text-slate-400 dark:text-neutral-600 uppercase tracking-widest">{{ subLabel }}</span>
+      </div>
+      <div>
+        <p class="text-5xl font-black text-slate-900 dark:text-white tracking-tighter">{{ value }}</p>
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] mt-1" [ngClass]="labelColorClass">{{ label }}</p>
+      </div>
+    </div>
+  </div>
+} @else {
+  <!-- Default Variant Card -->
+  <div class="group relative bg-white dark:bg-neutral-900 rounded-4xl p-8 shadow-xl border border-slate-100 dark:border-neutral-800 transition-all hover:shadow-2xl hover:-translate-y-2" [ngClass]="colorConfig.shadow">
+    @if (showBackgroundIcon && backgroundIcon) {
+      <div class="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:scale-125 transition-transform duration-700">
+        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24" [innerHTML]="backgroundIcon | safeHtml"></svg>
+      </div>
+    }
+    <div class="relative z-10 space-y-4">
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border" [ngClass]="[colorConfig.iconBg, colorConfig.iconText, colorConfig.iconBorder]">
+        <svg *ngIf="icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" [innerHTML]="icon | safeHtml" stroke-width="2.5"></svg>
+      </div>
+      <div>
+        <p class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">{{ value }}</p>
+        <p class="text-[10px] font-black text-slate-400 dark:text-neutral-600 uppercase tracking-[0.2em] mt-1">{{ label }}</p>
+      </div>
+    </div>
+  </div>
+}
