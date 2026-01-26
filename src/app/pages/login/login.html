@@ -1,0 +1,29 @@
+<app-default-login-layout
+    title="Welcome back"
+    primaryButtonText="Login now"
+    secondaryButtonText="Signup now"
+    (submit)="submit()"
+    (navigate)="navigate()"
+    [disablePrimaryButton]="isFormInvalid"
+    [isLoading]="isLoading"
+>
+    <form [formGroup]="loginForm" class="space-y-5">
+        <app-primary-input 
+            formControlName="email" 
+            inputName="email" 
+            label="Email" 
+            placeholder="Enter your email" 
+            type="email"
+            icon="mail">
+        </app-primary-input>
+        
+        <app-primary-input 
+            formControlName="password" 
+            inputName="password" 
+            label="Password" 
+            placeholder="Enter your password" 
+            type="password"
+            icon="lock">
+        </app-primary-input>
+    </form>
+</app-default-login-layout>

@@ -1,0 +1,20 @@
+<div class="input-container flex flex-col space-y-2">
+    <!-- Label -->
+    <label [for]="inputName" 
+           class="label block text-sm font-semibold text-slate-700 dark:text-white m-3">
+        {{ label }}
+    </label>
+    
+    <!-- Input -->
+    <input [type]="type" 
+           [value]="value"
+           (input)="onInput($event)"
+           [placeholder]="placeholder"
+           class="w-full px-4 py-3
+                  border-2 border-slate-200 dark:border-neutral-800 rounded-xl
+                  text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500
+                  bg-white dark:bg-black
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                  hover:border-slate-300 dark:hover:border-neutral-700
+                  transition-all duration-200" />
+</div>
