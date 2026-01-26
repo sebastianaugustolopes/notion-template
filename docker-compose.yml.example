@@ -1,0 +1,13 @@
+# IMPORTANT: This is a frontend-only application
+# This project does NOT include backend services
+# The backend (API) is a separate Spring Boot application that must be run independently
+#
+# To run this frontend:
+# 1. Install dependencies: npm install
+# 2. Start dev server: npm start
+# 3. Navigate to http://localhost:4200
+#
+# Backend Setup:
+# - The backend is a separate repository/project
+# - Update API_URL in .env.example to point to your backend service
+# - Default: http://localhost:8080/api (for local backend development)

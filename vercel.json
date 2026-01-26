@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "dist/notion_template/browser",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": [
+    {
+      "key": "VITE_API_URL",
+      "description": "Backend API URL (e.g., https://notion-template-api.onrender.com/api)"
+    }
+  ]
+}
