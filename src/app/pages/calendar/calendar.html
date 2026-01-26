@@ -1,0 +1,266 @@
+
+<app-dashboard-layout>
+  <div class="min-h-screen bg-slate-50/50 dark:bg-black/40 p-4 md:p-8 lg:p-10 animate-in fade-in duration-500">
+    
+    <!-- Page Header -->
+    <div class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div class="space-y-1">
+        <nav class="flex items-center gap-2 text-xs font-medium text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-2">
+          <span>Planning</span>
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="text-indigo-600 dark:text-indigo-400">Calendar View</span>
+        </nav>
+        <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Schedule</h1>
+        <p class="text-slate-500 dark:text-neutral-400 text-lg">Stay ahead of your deadlines and monitor performance.</p>
+      </div>
+
+      <button 
+        (click)="goToToday()"
+        class="group inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-800 rounded-2xl font-bold text-slate-700 dark:text-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all active:scale-95">
+        <svg class="w-5 h-5 text-indigo-500 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        Jump to Today
+      </button>
+    </div>
+
+    @if (isLoading) {
+      <div class="flex flex-col items-center justify-center py-40 space-y-4">
+        <div class="relative w-16 h-16">
+          <div class="absolute inset-0 border-4 border-indigo-100 dark:border-indigo-900/30 rounded-full"></div>
+          <div class="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
+        </div>
+        <span class="text-slate-400 dark:text-neutral-500 font-medium tracking-wide">Orchestrating your schedule...</span>
+      </div>
+    } @else {
+      <div class="max-w-7xl mx-auto space-y-8">
+        
+        <!-- Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Productivity Sidebar -->
+          <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+            <app-productivity-chart [tasks]="allTasks"></app-productivity-chart>
+            
+            <div class="bg-indigo-600 rounded-3xl p-8 mt-5 text-white shadow-xl shadow-indigo-600/20 relative overflow-hidden group">
+               
+               <h4 class="text-xl font-black mb-2">Efficiency Insight</h4>
+               <p class="text-indigo-100 text-sm leading-relaxed opacity-90">This feature is not available yet.</p>
+               <button class="mt-6 px-5 py-2.5 bg-white/20 hover:bg-white/30 rounded-xl text-xs font-bold uppercase tracking-widest backdrop-blur-md transition-all">View Full Stats</button>
+            </div>
+          </div>
+
+          <!-- Calendar Component -->
+          <div class="lg:col-span-7">
+            <div class="bg-white dark:bg-neutral-900 rounded-[2.5rem] border border-slate-200 dark:border-neutral-800 shadow-xl overflow-hidden animate-in slide-in-from-right-4 duration-700">
+              
+              <!-- Calendar Navigation -->
+              <div class="bg-slate-50/50 dark:bg-neutral-800/30 border-b border-slate-100 dark:border-neutral-800 px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-6">
+                   <h2 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                    {{ currentMonthName }} <span class="text-indigo-600 dark:text-indigo-400">{{ currentYear }}</span>
+                  </h2>
+                </div>
+                
+                <div class="flex items-center gap-2 p-1.5 bg-white dark:bg-black rounded-2xl border border-slate-200 dark:border-neutral-800 shadow-sm">
+                  <button 
+                    (click)="previousMonth()"
+                    class="p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-neutral-800 text-slate-400 hover:text-indigo-600 transition-all active:scale-90">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <div class="w-px h-6 bg-slate-100 dark:bg-neutral-800"></div>
+                  <button 
+                    (click)="nextMonth()"
+                    class="p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-neutral-800 text-slate-400 hover:text-indigo-600 transition-all active:scale-90">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Week Days Label -->
+              <div class="grid grid-cols-7 border-b border-slate-50 dark:border-neutral-800">
+                @for (day of weekDays; track day) {
+                  <div class="py-4 text-center text-[10px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-[0.2em]">
+                    {{ day }}
+                  </div>
+                }
+              </div>
+
+              <!-- Calendar Main Grid -->
+              <div class="grid grid-cols-7">
+                @for (day of calendarDays; track trackByDay($index, day)) {
+                  <div 
+                    (click)="selectDay(day)"
+                    class="group relative min-h-[140px] p-4 border-b border-r border-slate-100 dark:border-neutral-800/50 cursor-pointer transition-all duration-300"
+                    [class.bg-indigo-50/20]="day.isSelected"
+                    [class.dark:bg-indigo-900/10]="day.isSelected"
+                    [class.z-10]="day.isSelected"
+                    [class.shadow-inner]="day.isSelected">
+                    
+                    <!-- Day Marker -->
+                    <div class="flex items-start justify-between mb-4">
+                      <span 
+                        class="w-10 h-10 flex items-center justify-center rounded-2xl text-base font-bold transition-all duration-300"
+                        [class.bg-indigo-600]="day.isToday"
+                        [class.text-white]="day.isToday"
+                        [class.shadow-lg]="day.isToday"
+                        [class.shadow-indigo-500/30]="day.isToday"
+                        [class.text-slate-900]="day.isCurrentMonth && !day.isToday"
+                        [class.dark:text-white]="day.isCurrentMonth && !day.isToday"
+                        [class.text-slate-300]="!day.isCurrentMonth"
+                        [class.dark:text-neutral-700]="!day.isCurrentMonth">
+                        {{ day.dayOfMonth }}
+                      </span>
+                      
+                      @if (day.tasks.length > 0) {
+                        <div class="flex -space-x-1.5 overflow-hidden">
+                          <span class="relative z-10 block w-2 h-2 rounded-full bg-indigo-500"></span>
+                          @if (day.tasks.length > 1) {
+                            <span class="relative z-0 block w-2 h-2 rounded-full bg-indigo-300 opacity-50"></span>
+                          }
+                        </div>
+                      }
+                    </div>
+
+                    <!-- Task Quick View -->
+                    <div class="space-y-2">
+                      @for (task of day.tasks.slice(0, 2); track task.id) {
+                        <div 
+                          (click)="openTaskDetail(task, $event)"
+                          class="group/task relative flex items-center gap-2 px-3 py-2 rounded-xl border transition-all duration-200 hover:scale-[1.03] shadow-sm"
+                          [class.bg-white]="task.status !== 'DONE'"
+                          [class.dark:bg-black]="task.status !== 'DONE'"
+                          [class.border-slate-100]="task.status !== 'DONE'"
+                          [class.dark:border-neutral-800]="task.status !== 'DONE'"
+                          [class.opacity-40]="task.status === 'DONE'"
+                          [class.grayscale]="task.status === 'DONE'">
+                          
+                          <div class="w-1.5 h-1.5 rounded-full shrink-0 bg-indigo-600 shadow-sm shadow-indigo-500/40"></div>
+                          <span class="text-[11px] font-bold text-slate-700 dark:text-neutral-300 truncate">
+                            {{ task.title }}
+                          </span>
+                        </div>
+                      }
+                      
+                      @if (day.tasks.length > 2) {
+                        <div class="text-[10px] text-slate-400 dark:text-neutral-600 font-bold pl-1">
+                          +{{ day.tasks.length - 2 }} more events
+                        </div>
+                      }
+                    </div>
+
+                    <!-- Highlight active cell -->
+                    <div *ngIf="day.isSelected" class="absolute inset-0 border-2 border-indigo-500 rounded-sm pointer-events-none"></div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</app-dashboard-layout>
+
+<!-- Task Detail Modal (Glassmorphic Side-Sheet Style) -->
+@if (selectedTask) {
+  <div 
+    (click)="closeTaskDetail()"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-10 bg-slate-900/60 dark:bg-black/80 backdrop-blur-xl animate-in fade-in duration-300">
+    <div 
+      (click)="$event.stopPropagation()"
+      class="relative bg-white dark:bg-neutral-900 rounded-[3rem] shadow-2xl w-full max-w-xl border border-white/20 dark:border-neutral-800 overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-500">
+      
+      <!-- Visual Accent -->
+      <div class="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-indigo-600 via-purple-500 to-indigo-600"></div>
+
+      <!-- Header Section -->
+      <div class="px-10 py-12 space-y-4">
+        <div class="flex items-start justify-between">
+          <div class="p-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-3xl text-indigo-600 dark:text-indigo-400">
+             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" stroke-width="2.5"/></svg>
+          </div>
+          <button (click)="closeTaskDetail()" class="p-3 bg-slate-50 dark:bg-neutral-800 text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-2xl transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <div>
+          <h3 class="text-3xl font-black text-slate-900 dark:text-white leading-tight mb-2">
+            {{ selectedTask.title }}
+          </h3>
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-neutral-800 rounded-full text-xs font-bold text-slate-500 dark:text-neutral-400">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2"/></svg>
+            Deadline: {{ formatTaskDate(selectedTask.endDate) }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Body -->
+      <div class="px-10 pb-12 space-y-10">
+        
+        <!-- Overdue Card -->
+        @if (isSelectedTaskOverdue()) {
+          <div class="p-6 bg-rose-500/10 border border-rose-500/20 rounded-3xl flex items-center gap-5">
+            <div class="w-12 h-12 bg-rose-500 text-white rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-rose-500/30">
+              <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-width="2.5"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-black text-rose-600 uppercase tracking-widest">Immediate Attention</p>
+              <p class="text-xs text-rose-500/80 font-medium">This task is past its designated deadline.</p>
+            </div>
+          </div>
+        }
+
+        <!-- Description Section -->
+        @if (selectedTask.description) {
+          <div class="space-y-3">
+            <label class="text-[10px] font-black text-slate-400 dark:text-neutral-600 uppercase tracking-[0.2em]">Context & Notes</label>
+            <p class="text-lg text-slate-600 dark:text-neutral-400 leading-relaxed font-medium italic">
+              "{{ selectedTask.description }}"
+            </p>
+          </div>
+        }
+
+        <!-- Grid Attributes -->
+        <div class="grid grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <label class="text-[10px] font-black text-slate-400 dark:text-neutral-600 uppercase tracking-[0.2em]">Priority Matrix</label>
+            <div class="flex">
+              <app-priority-badge [priority]="selectedTask.priority"></app-priority-badge>
+            </div>
+          </div>
+          
+          <div class="space-y-3">
+            <label class="text-[10px] font-black text-slate-400 dark:text-neutral-600 uppercase tracking-[0.2em]">Current State</label>
+            <div class="flex items-center gap-3">
+              <span class="w-3 h-3 rounded-full bg-indigo-500 shadow-sm shadow-indigo-500/30"></span>
+              <span class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">{{ getTaskStatusInfo(selectedTask.status).label }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Ownership -->
+        <div class="pt-10 border-t border-slate-100 dark:border-neutral-800 flex items-center justify-between">
+          <div class="flex items-center gap-4">
+             <div class="w-12 h-12 bg-slate-100 dark:bg-neutral-800 rounded-2xl flex items-center justify-center text-slate-500 dark:text-neutral-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="getProjectIcon(selectedTask.projectType)"/>
+                </svg>
+             </div>
+             <div>
+                <p class="text-[10px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest">Part of project</p>
+                <p class="text-sm font-black text-slate-900 dark:text-white">{{ selectedTask.projectName }}</p>
+             </div>
+          </div>
+
+          <button 
+            (click)="navigateToProject(selectedTask.projectId)"
+            class="px-6 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black text-xs uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl shadow-black/10">
+            Open Project
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
