@@ -1,46 +1,20 @@
-<app-default-login-layout
-    title="Create your account"
-    primaryButtonText="Create account"
-    secondaryButtonText="Login now"
-    (submit)="submit()"
-    (navigate)="navigate()"
-    [disablePrimaryButton]="signupForm.invalid"
->
+<app-default-login-layout title="Create your account" primaryButtonText="Create account" secondaryButtonText="Login now"
+    (submit)="submit()" (navigate)="navigate()" [disablePrimaryButton]="disableButton" [isLoading]="isLoading">
     <form [formGroup]="signupForm" class="space-y-5">
-        <app-primary-input 
-            formControlName="name" 
-            inputName="name" 
-            label="Name" 
-            placeholder="Enter your name" 
-            type="text"
-            icon="user">
+        <app-primary-input formControlName="name" inputName="name" label="Name" placeholder="Enter your name"
+            type="text" icon="user">
         </app-primary-input>
-        
-        <app-primary-input 
-            formControlName="email" 
-            inputName="email" 
-            label="Email" 
-            placeholder="Enter your email" 
-            type="email"
-            icon="mail">
+
+        <app-primary-input formControlName="email" inputName="email" label="Email" placeholder="Enter your email"
+            type="email" icon="mail">
         </app-primary-input>
-        
-        <app-primary-input 
-            formControlName="password" 
-            inputName="password" 
-            label="Password" 
-            placeholder="Enter your password" 
-            type="password"
-            icon="lock">
+
+        <app-primary-input formControlName="password" inputName="password" label="Password"
+            placeholder="Enter your password" type="password" icon="lock">
         </app-primary-input>
-        
-        <app-primary-input 
-            formControlName="passwordConfirm" 
-            inputName="passwordConfirm" 
-            label="Confirm Password" 
-            placeholder="Confirm your password" 
-            type="password"
-            icon="lock">
+
+        <app-primary-input formControlName="passwordConfirm" inputName="passwordConfirm" label="Confirm Password"
+            placeholder="Confirm your password" type="password" icon="lock">
         </app-primary-input>
     </form>
 </app-default-login-layout>

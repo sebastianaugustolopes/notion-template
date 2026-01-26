@@ -4,8 +4,8 @@ const path = require('path');
 // Read the environment variable from Vercel (or use default)
 const apiUrl = process.env.VITE_API_URL || 'http://localhost:8080';
 
-// Path to the environment file
-const envPath = path.join(__dirname, '../src/environments/environment.ts');
+// Path to the production environment file (contains __API_URL__ placeholder)
+const envPath = path.join(__dirname, '../src/environments/environment.prod.ts');
 
 // Read the file
 let content = fs.readFileSync(envPath, 'utf8');
