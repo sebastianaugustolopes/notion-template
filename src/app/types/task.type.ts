@@ -44,7 +44,7 @@ export interface TaskRequest {
 export const TASK_PRIORITIES: (TaskPriorityInfo & { iconColor?: string; icon?: string })[] = [
   { value: 'LOW', label: 'Low', color: 'emerald', bgColor: 'bg-emerald-500', textColor: 'text-emerald-700', borderColor: 'border-emerald-200', iconColor: 'emerald' },
   { value: 'MEDIUM', label: 'Medium', color: 'amber', bgColor: 'bg-amber-500', textColor: 'text-amber-700', borderColor: 'border-amber-200', iconColor: 'amber' },
-  { value: 'HIGH', label: 'High', color: 'red', bgColor: 'bg-red-500', textColor: 'text-red-700', borderColor: 'border-red-200', iconColor: 'rose' },
+  { value: 'HIGH', label: 'High', color: 'red', bgColor: 'bg-red-500', textColor: 'text-red-700', borderColor: 'border-red-200', iconColor: 'red' },
 ];
 
 export const TASK_STATUSES: (TaskStatusInfo & { iconColor?: string; icon?: string })[] = [
@@ -78,7 +78,7 @@ export interface TaskStats {
 
 // Expired Task
 export interface ExpiredTask {
-priority: any;
+  priority: any;
   id: string;
   title: string;
   description: string;
@@ -104,7 +104,7 @@ export interface StatusStat {
 
 export function calculateStatusStats(stats: TaskStats): StatusStat[] {
   const total = stats.totalTasks;
-  
+
   return [
     {
       status: 'TODO',

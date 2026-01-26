@@ -46,7 +46,7 @@ export const PROJECT_TYPES: { value: ProjectType; label: string; icon: string; i
 export const PRIORITIES: (PriorityInfo & { iconColor?: string; icon?: string })[] = [
   { value: 'LOW', label: 'Low', color: 'emerald', bgColor: 'bg-emerald-500', textColor: 'text-emerald-700', borderColor: 'border-emerald-200', iconColor: 'emerald' },
   { value: 'MEDIUM', label: 'Medium', color: 'amber', bgColor: 'bg-amber-500', textColor: 'text-amber-700', borderColor: 'border-amber-200', iconColor: 'amber' },
-  { value: 'HIGH', label: 'High', color: 'orange', bgColor: 'bg-orange-500', textColor: 'text-orange-700', borderColor: 'border-orange-200', iconColor: 'amber' },
+  { value: 'HIGH', label: 'High', color: 'red', bgColor: 'bg-red-500', textColor: 'text-red-700', borderColor: 'border-red-200', iconColor: 'red' },
   { value: 'URGENT', label: 'Urgent', color: 'red', bgColor: 'bg-red-500', textColor: 'text-red-700', borderColor: 'border-red-200', iconColor: 'rose' },
 ];
 
