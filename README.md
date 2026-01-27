@@ -1,12 +1,12 @@
-# Notion OS Template
+# Notion Template
 
-> A powerful, modern project management dashboard inspired by Notion's aesthetics, built with **Angular** and **TailwindCSS**.
+> A project management dashboard inspired by Notion's aesthetics, built with **Angular** and **TailwindCSS**.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Angular](https://img.shields.io/badge/Angular-v18+-dd0031.svg?logo=angular)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4.0-38bdf8.svg?logo=tailwindcss)
 
-## 🚀 Overview
+## Overview
 
 **Notion OS Template** is a high-performance, single-page application (SPA) designed to help individuals and teams manage projects and tasks with style. It features a responsive, glassmorphic UI, real-time status updates, and a modular architecture that makes it easy to extend.
 
@@ -26,7 +26,7 @@
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 This project leverages the latest web technologies to deliver a premium user experience:
 
@@ -39,7 +39,7 @@ This project leverages the latest web technologies to deliver a premium user exp
 
 ---
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 Follow these steps to get the project running on your local machine.
 
@@ -75,7 +75,7 @@ Follow these steps to get the project running on your local machine.
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 
 The project follows a modular, scalable architecture:
 
@@ -94,7 +94,7 @@ src/
 
 ---
 
-## 🧩 Scripts
+## Scripts
 
 - `npm start`: Runs the app in development mode.
 - `npm run build`: Builds the app for production to the `dist/` folder.
@@ -103,7 +103,7 @@ src/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -113,12 +113,10 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
----
+## License
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License
 
 ---
 
-<p align="center">Made with ❤️ by the Notion OS Team</p>
+<p>Made by Sebastian</p>
